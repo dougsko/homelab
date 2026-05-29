@@ -1,0 +1,33 @@
+[Unit]
+Description=Plex Media Server
+Wants=network-online.target
+After=network-online.target
+
+[Container]
+Image=docker.io/plexinc/pms-docker:plexpass
+AutoUpdate=registry
+
+Networking=host
+
+AddDevice=nvidia.com/gpu=all
+
+Environment=TZ=America/New_York
+Environment=PLEX_UID=997
+Environment=PLEX_GUID=984
+
+#Environment=PLEX_CLAIM=claim-xxxxx
+
+Environment=ADVERTISE_IP=http://192.168.1.5:32400/
+
+Volume=/var/lib/plexmediaserver/Library/Application Support/Plex Media Server:/config:Z
+Volume=/deadpool/doug/Videos:/media:ro,Z
+Volume=/dev/shm:/transcode
+
+[Service]
+Restart=always
+TimeoutStartSec=180
+
+[Install]
+WantedBy=default.target
+
+
