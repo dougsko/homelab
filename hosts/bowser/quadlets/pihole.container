@@ -1,0 +1,25 @@
+[Unit]
+Description=Pihole
+
+[Container]
+ContainerName=Pihole
+Environment=TZ=America/New_York
+Secret=pihole_webpassword,target=FTLCONF_webserver_api_password
+
+Image=docker.io/pihole/pihole:latest
+AutoUpdate=registry
+Network=host
+Volume=pihole-etc:/etc/pihole
+Volume=pihole-dnsmasq:/etc/dnsmasq.d
+
+HealthCmd=curl -fsS http://localhost:80/admin || exit 1
+HealthInterval=30s
+HealthTimeout=5s
+HealthRetries=3
+HealthStartPeriod=60s
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target

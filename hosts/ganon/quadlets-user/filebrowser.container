@@ -1,0 +1,30 @@
+[Unit]
+Description=Filebrowser File Manager Container
+After=network-online.target
+
+[Container]
+Image=docker.io/filebrowser/filebrowser:latest
+ContainerName=filebrowser
+
+# Enable automatic updates from the registry
+AutoUpdate=registry
+
+# Expose your desired port (8080 host to 80 container)
+PublishPort=8080:8080
+
+# Exact folder and database mappings from your current setup
+Volume=/home/doug/deadpool:/srv:Z
+Volume=/home/doug/filebrowser_data:/database:Z
+
+# Add these two lines to align permissions with your user account
+User=1000:1000
+UserNS=keep-id
+
+Environment=FB_PORT=8080
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target
+
