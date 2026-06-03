@@ -1,0 +1,20 @@
+[Unit]
+Description=Wyoming Whisper
+
+[Container]
+Image=docker.io/rhasspy/wyoming-whisper:latest
+ContainerName=wyoming-whisper
+
+Volume=whisper_data:/data:Z
+
+PublishPort=10300:10300
+
+Exec=\
+  --model tiny-int8 \
+  --language en
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=multi-user.target default.target

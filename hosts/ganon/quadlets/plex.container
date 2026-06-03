@@ -7,7 +7,7 @@ After=network-online.target
 Image=docker.io/plexinc/pms-docker:plexpass
 AutoUpdate=registry
 
-Networking=host
+Network=host
 
 AddDevice=nvidia.com/gpu=all
 
@@ -19,9 +19,11 @@ Environment=PLEX_GUID=984
 
 Environment=ADVERTISE_IP=http://192.168.1.5:32400/
 
-Volume=/var/lib/plexmediaserver/Library/Application Support/Plex Media Server:/config:Z
-Volume=/deadpool/doug/Videos:/media:ro,Z
-Volume=/dev/shm:/transcode
+Volume=/var/lib/plexmediaserver:/config:Z
+#Volume=/deadpool/doug/Videos:/media:ro,Z
+Volume=/deadpool/doug/Videos:/deadpool/doug/Videos:ro,Z
+Volume=/deadpool/doug/Music:/deadpool/doug/Music:ro,Z
+#Volume=/dev/shm:/transcode
 
 [Service]
 Restart=always
@@ -29,5 +31,3 @@ TimeoutStartSec=180
 
 [Install]
 WantedBy=default.target
-
-

@@ -1,0 +1,21 @@
+[Unit]
+Description=Home Assistant
+After=network-online.target
+
+[Container]
+ContainerName=homeassistant
+Environment=TZ=America/New_York
+
+Image=ghcr.io/home-assistant/home-assistant:stable
+AutoUpdate=registry
+Network=host
+Volume=homeassistant_data:/config:Z
+Volume=/run/dbus:/run/dbus:ro
+
+PodmanArgs=--privileged
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target

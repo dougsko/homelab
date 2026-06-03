@@ -1,0 +1,16 @@
+[Unit]
+Description=Wyoming OpenWakeWord
+
+[Container]
+Image=docker.io/rhasspy/wyoming-openwakeword:latest
+ContainerName=wyoming-openwakeword
+
+Volume=openwakeword_data:/data:Z
+
+PublishPort=10400:10400
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=multi-user.target default.target
