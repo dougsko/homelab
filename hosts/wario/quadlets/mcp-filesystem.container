@@ -1,0 +1,27 @@
+[Unit]
+Description=MCP Filesystem Server
+After=network-online.target
+
+[Container]
+Image=docker.io/mcp/filesystem:latest
+ContainerName=mcp-filesystem
+
+# Expose MCP HTTP endpoint
+PublishPort=8000:8000
+
+# REQUIRED: restrict filesystem access
+Volume=%h/vault:/workspace:Z
+
+# Optional MCP compatibility env
+Environment=FILESYSTEM_PATHS=/workspace
+Environment=PORT=8000
+
+# Correct way to pass CLI args in Quadlet
+Exec=/workspace
+
+[Service]
+Restart=always
+TimeoutStartSec=60
+
+[Install]
+WantedBy=default.target

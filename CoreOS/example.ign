@@ -1,0 +1,1 @@
+{"ignition":{"version":"3.6.0"},"passwd":{"users":[{"name":"core","sshAuthorizedKeys":["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEri7IoTkuqP0dbjB4k/mDxuILXvwy6VsGcAbC2Q+yQ0 doug@bowser"]},{"name":"doug","passwordHash":"$y$j9T$LGjMah3xIB/WghUnp0v6b.$BBvUki1oEZwCe7INUa9pc5PGBNkwqzHoQOCl1wgJK3A"}]}}

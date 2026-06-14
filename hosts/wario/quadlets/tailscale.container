@@ -1,0 +1,53 @@
+[Unit]
+Description=Tailscale Network (Hardened Image)
+After=network-online.target
+
+[Container]
+Image=docker.io/tailscale/tailscale:latest
+ContainerName=tailscale
+
+# Required state persistence
+Volume=tailscale:/var/lib/tailscale:Z
+
+# Required device access for networking
+#Device=/dev/net/tun
+
+# Required capabilities (matches Docker docs)
+#CapAdd=NET_ADMIN
+#CapAdd=NET_RAW
+
+Environment=TS_EXTRA_ARGS=--advertise-exit-node
+
+# Host networking is required for correct routing
+Network=host
+
+# ---- Tailscale configuration ----
+
+# REQUIRED: auth key (or login via device flow if omitted)
+Environment=TS_AUTHKEY=tskey-auth-khHQzfhD1221CNTRL-mHX3UPY6DLjzrfBzvPn5Lj7vhHq2NExbY
+
+# Required state dir (matches volume mount)
+Environment=TS_STATE_DIR=/var/lib/tailscale
+
+# Optional but common:
+Environment=TS_USERSPACE=true
+Environment=TS_ACCEPT_DNS=true
+
+# Optional: exit node / subnet router / etc
+# Environment=TS_EXTRA_ARGS=--advertise-exit-node
+
+AutoUpdate=registry
+
+#HealthCmd=curl -fsS http://localhost:3000/ || exit 1
+#HealthInterval=30s
+#HealthTimeout=5s
+#HealthRetries=3
+#HealthStartPeriod=60s
+
+
+[Service]
+Restart=always
+TimeoutStartSec=0
+
+[Install]
+WantedBy=default.target

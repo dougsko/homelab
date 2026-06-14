@@ -1,0 +1,32 @@
+[Unit]
+Description=SilverBullet Notes
+After=network-online.target
+
+[Container]
+Image=docker.io/zefhemel/silverbullet:latest
+ContainerName=silverbullet
+
+# SilverBullet listens on 3000 inside the container
+PublishPort=3000:3000
+
+# Your notes live here (plain markdown files)
+Volume=%h/vault:/space:Z
+
+# Optional: timezone (nice for timestamps)
+Environment=TZ=America/New_York
+
+# Optional: auto-update image on restart (if supported in your setup)
+AutoUpdate=registry
+
+HealthCmd=curl -fsS http://localhost:3000/ || exit 1
+HealthInterval=30s
+HealthTimeout=5s
+HealthRetries=3
+HealthStartPeriod=60s
+
+[Service]
+Restart=always
+TimeoutStartSec=300
+
+[Install]
+WantedBy=default.target
