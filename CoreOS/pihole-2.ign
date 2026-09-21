@@ -1,0 +1,133 @@
+{
+  "ignition": {
+    "version": "3.6.0"
+  },
+  "passwd": {
+    "users": [
+      {
+        "name": "core",
+        "sshAuthorizedKeys": [
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDu3b0sR30apw6ot/2esLkxRqmjjw1zfzSLYm6sfohwY doug@wario",
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAcEz5hdQTZSv5rtcVjDeDgfA+r7AFsua8k8FQxxp8rB doug@ganon",
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEri7IoTkuqP0dbjB4k/mDxuILXvwy6VsGcAbC2Q+yQ0 doug@bowser"
+        ]
+      }
+    ]
+  },
+  "storage": {
+    "directories": [
+      {
+        "path": "/mnt/deadpool",
+        "mode": 493
+      }
+    ],
+    "files": [
+      {
+        "overwrite": true,
+        "path": "/etc/hostname",
+        "contents": {
+          "compression": "",
+          "source": "data:,pihole-2"
+        },
+        "mode": 420
+      },
+      {
+        "path": "/etc/fstab",
+        "append": [
+          {
+            "compression": "",
+            "source": "data:;base64,MTkyLjE2OC4xLjU6L2RlYWRwb29sL2RvdWcgICAgL21udC9kZWFkcG9vbC8gICAgbmZzICAgIGRlZmF1bHRzICAgIDAgMAo="
+          }
+        ]
+      },
+      {
+        "path": "/etc/NetworkManager/system-connections/enp1s0.nmconnection",
+        "contents": {
+          "compression": "gzip",
+          "source": "data:;base64,H4sIAAAAAAAC/1zKwaqDQAxG4X2e5eo1IqVd5EnERZj5xQEnyiQt+PZdFUqX5/DN6TBDinLYQiUL7GQfKK4TgtjQDEHFAm3VhM604mPmcr6mhTTnBncWfow93+499zzw/zj9fQ3K5vLTnUNb2oSqXt2qZZdVdwdVxHZkqWpP3ekdAAD//+EiF1mhAAAA"
+        },
+        "mode": 384
+      },
+      {
+        "overwrite": true,
+        "path": "/etc/systemd/resolved.conf.d/no-stub.conf",
+        "contents": {
+          "compression": "",
+          "source": "data:,%5BResolve%5D%0ADNSStubListener%3Dno%0A"
+        },
+        "mode": 420
+      },
+      {
+        "overwrite": true,
+        "path": "/etc/resolve.conf",
+        "contents": {
+          "compression": "",
+          "source": "data:,nameserver%20127.0.0.1%0A"
+        },
+        "mode": 420
+      },
+      {
+        "path": "/etc/zincati/config.d/51-rollout-wariness.toml",
+        "contents": {
+          "compression": "",
+          "source": "data:,%5Bidentity%5D%0Arollout_wariness%20%3D%200.001%0A"
+        }
+      },
+      {
+        "path": "/etc/zincati/config.d/55-updates-strategy.toml",
+        "contents": {
+          "compression": "",
+          "source": "data:;base64,W3VwZGF0ZXNdCnN0cmF0ZWd5ID0gInBlcmlvZGljIgpbW3VwZGF0ZXMucGVyaW9kaWMud2luZG93XV0KZGF5cyA9IFsgIlNhdCIsICJTdW4iIF0Kc3RhcnRfdGltZSA9ICIwMjozMCIKbGVuZ3RoX21pbnV0ZXMgPSA2MAo="
+        }
+      },
+      {
+        "path": "/etc/containers/systemd/node-exporter.container",
+        "contents": {
+          "compression": "gzip",
+          "source": "data:;base64,H4sIAAAAAAAC/1SQsW7jMAyGdz2FX8DxHkBD7i7AZbgMV6QdAg+E/TsRKosuSTXR2xdunLTdiP+TPhL/8ZCCte4PtJMwWeDk99yj2l4nFoNUA0v1l9WqfzAJnbrNYBCfYBeW15pTDAkrIznBnDv+5mQUEqR1u5FO8G+ZyipwMwmPsDOyNol71FgWrCMZ1Nzj455G+B9P3CYbH6aeDF5wCmpS3P52gD+zmnvmmEf4eUm3buboNgo/kBZdyDx9A+tGmG34zLZXdL6uJ7LzahYM6r9s1QK06CPXovf4ZvGLzbnjE+Q9dGjdf6iRmKd4oTKTXVKjGFv3QsnQ/yp+zNFCnRWyVFn1GChHuzf7EQAA//8sNjFLqAEAAA=="
+        },
+        "mode": 420
+      },
+      {
+        "path": "/etc/containers/systemd/cadvisor.container",
+        "contents": {
+          "compression": "gzip",
+          "source": "data:;base64,H4sIAAAAAAAC/2xQTWvjMBC961f4DyTKMQh0yG4ugd0lbEh7MD6M5bE7RJbCzMjB/76kbUwovTwe72MYXn1OpI3ZowSmq1JOPuy6iSRz1WeujrkbIVW/c1KghFz9RWUKYna9IvuEest8WeUUKeFagQdUY+ol35jDCAP6IfCasg3weXshLoKiqFkK/2BE/3DNrmg+XztQ9IwDifJsjqWNJG/HzOq3m+3G3cGcMBQmnf9Ai3FPAm1Er1zQvORYRvTWWc5Ze3GcF20CtlySW8iTJ7O4D/iWj9Ta8HhXrPtBfK50ONmO5GLdQu+2qU/IEwVszH8UBVYP8QazGFMfkijE2JhXSIrdr9mPJSqtiiB/bVx12EOJ+pj8PQAA//9nNBxSyAEAAA=="
+        },
+        "mode": 420
+      },
+      {
+        "path": "/etc/containers/systemd/backrest.container",
+        "contents": {
+          "compression": "gzip",
+          "source": "data:;base64,H4sIAAAAAAAC/2yR3W4aMRCF7/0UvAD4NrHki2WhAbUlUaB/QQgN3mHXxfag8ZiIt6/4bav2xuPjc+SjT7P8krys1AizY78XT8kOwe0YsyhVbQXZHoD7MUm/QWj2RGEQqSRRallTEvAJeaXu1xlEtJvbD+N08EwpYhI7rOqPr+P5Yj2qFpXVDQj07m/18+zD9MlqR2nr2+sY/MyUet9HT+u6qifj9eT589hqB67D3uLNVhHZO9AzfF//IN6pCWX5u38aoUXbkNshDzzpFhila5G4RX1LmewYxHVqjq6wl+Mn2GAY+QybgFa4oHopm+Bz90Is9vHh8cGcDvWVQvmjrX9CMmcw8/aPeUEyV7T/BU5c5oL329ZGd5TlLmMSfVvEmaDss2bcUzaXodRyjnzwDlfqFbMAi4XwDseTM01ZIISV+gZJsBkebSxBfL9k5IEAtyi9BrdQglyl+hUAAP//NEABEiECAAA="
+        },
+        "mode": 420
+      },
+      {
+        "path": "/etc/containers/systemd/pihole.container",
+        "contents": {
+          "compression": "gzip",
+          "source": "data:;base64,H4sIAAAAAAAC/1yQwQ7aQAxE7/6NXgvckfaQ0iIh0bQq0KpEUWSyQ1ix8aZeQ8Tf9xBAak+2NeMnj6uDBKvpM3KrYbCQxH0PlxRBVJwN6gQ2Jr3OksQgmBtrByOqVkmMg0Brercl93DDtP5F7kGT9BBz+6MremhoeVFibH4nvf6jr/fb1bdy3XjJTQzZIEG6r8nDFdst0YcdWoU9yc2I08A5j0n9x+mcN2DEKUPv0IaH0LxcRJueOzif2it0HtJiIj3LMrIhGxU3S4fBs8EpupBNH0TlFN9dUjainyne3hFnsHa5gLUvzvE/3UvuOf+ZPM9h7pdHomoHvYcWNf1ANlZzHEd+ZKJqI9k4xpp+sRj8p4fzOPMt2uv1fwMAAP//4uJkn7IBAAA="
+        },
+        "mode": 420
+      },
+      {
+        "path": "/etc/containers/systemd/tailscale.container",
+        "contents": {
+          "compression": "gzip",
+          "source": "data:;base64,H4sIAAAAAAAC/2yTX28aOxDF3/0pLOUlPGy40VWkXCQ/bBbrhjSl6e6StEUIGXsgI7w2scdQvn21m5A/JW/IZ+Ywv5mz04lDmrEhRB1wQ+idqBXaqJUFPgba+bDmp9cqGHBg+KhRK+ixfEkQhHuWM+8sOjgjFVZAjE0L70ihgzBjXb0wXq8hnKHv08H77dfAKoJI7LVrrBoQrzJjJ7yEp4QBDI+kCPgGQsRI4DSwe2/T+/JBf6tC3+Li3R/8+uBhYIsauNIaYuRLH/gLB7oVy40ZdrroG9j2HVCfkvvQr9VGLdAiIUR+2ijSjxD5sEPkxuvYa12KQ9VejGU9z4dfR+NP3sv8gbET6bYYvGvAkairufxRl/k8L/+vRJYps4VAGCGD30iZ86ZbybWP9G5wjpGHw4Qtk/YhgCYefKIW7OWU4tFHavuzLMv426W1d0tcpaDaBHRixyy/T0alHA64SvTI17Dnpz5w61fo+BbVYZdL63ccl9w3SASmd0SUT+rrL/KnoLiGfdaaZet1XVwubh4u8fy8GNflbZbiU17JHf57fyFvC5LyptpNLi7l1eI/vZfnrvgkCgbD2w22XRZ445OjHvtrhKrOazkfjkpxnJDW+FsXfmX5IhHXvmm8GxxxTCpZVnd5IQWFBMeYRSHv6vlwXD3rLE/kJxujCESAFUYKe8amFYR2bTNWQiQVSCi7U/vIamzAJ6ratwq0+Iex6chFUtbO2INyBOZqL5pkCbMUIRy+uD8BAAD//1a+Hb3EAwAA"
+        },
+        "mode": 420
+      }
+    ]
+  },
+  "systemd": {
+    "units": [
+      {
+        "enabled": true,
+        "name": "podman.socket"
+      }
+    ]
+  }
+}

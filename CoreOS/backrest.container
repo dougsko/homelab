@@ -1,0 +1,17 @@
+[Unit]
+Description=Backrest
+
+[Container]
+ContainerName=backrest
+Environment=BACKREST_DATA=/data BACKREST_CONFIG=/config/config.json XDG_CACHE_HOME=/cache TZ=America/New_York
+HostName=backrest
+Image=docker.io/garethgeorge/backrest:scratch
+PublishPort=9898:9898
+Volume=backrest-data:/data
+Volume=backrest-config:/config
+Volume=backrest-cache:/cache
+Volume=/:/host
+Volume=/mnt/deadpool/backups/repos:/repos
+
+[Service]
+Restart=always

@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 
-IGNITION_CONFIG="/var/lib/libvirt/images/server-01.ign"
+HOST=$1
+
+IGNITION_CONFIG="/var/lib/libvirt/images/${HOST}.ign"
 IMAGE="/var/lib/libvirt/images/fedora-coreos-44.20260523.3.1-qemu.x86_64.qcow2"
-VM_NAME="server-01"
+VM_NAME="${HOST}"
 VCPUS="2"
 RAM_MB="2048"
 STREAM="stable"

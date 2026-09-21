@@ -1,19 +1,99 @@
 variant: fcos
 version: 1.5.0
+systemd:
+  units:
+    - name: podman.socket
+      enabled: true
 passwd:
   users:
     - name: core
       ssh_authorized_keys:
         - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDu3b0sR30apw6ot/2esLkxRqmjjw1zfzSLYm6sfohwY doug@wario
+        - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAcEz5hdQTZSv5rtcVjDeDgfA+r7AFsua8k8FQxxp8rB doug@ganon
 storage:
   directories:
     - path: /mnt/deadpool
       mode: 0755
   files:
+    - path: /etc/hostname
+      mode: 0644
+      overwrite: true
+      contents:
+        inline: server-01
     - path: /etc/fstab
       append:
         - inline: |
-            192.168.1.5:/deadpool/doug    /mnt/deadpool/    nfs    defaults    0 0
+              192.168.1.5:/deadpool/doug    /mnt/deadpool/    nfs    defaults    0 0
+    - path: /etc/NetworkManager/system-connections/enp1s0.nmconnection
+      mode: 0600
+      contents:
+        inline: |
+          [connection]
+          id=enp1s0
+          type=ethernet
+          interface-name=enp1s0
+          [ipv4]
+          address1=192.168.1.100/24,192.168.1.1
+          dns=192.168.1.1
+          dns-search=
+          may-fail=false
+          method=manual
+    # freeing up port 53
+    - path: /etc/systemd/resolved.conf.d/no-stub.conf
+      mode: 0644
+      overwrite: true
+      contents:
+        inline: |
+          [Resolve]
+          DNSStubListener=no
+    - path: /etc/resolve.conf
+      mode: 0644
+      overwrite: true
+      contents:
+        inline: |
+          nameserver 127.0.0.1
+    - path: /etc/containers/systemd/node-exporter.container
+      mode: 0644
+      contents:
+        inline: |
+          [Unit]
+          Description=Node Exporter for Host Metrics
+          After=network-online.target
+
+          [Container]
+          Image=quay.io/prometheus/node-exporter:latest
+          ContainerName=node-exporter
+          AutoUpdate=registry
+          Network=host
+          Volume=/proc:/host/proc:ro
+          Volume=/sys:/host/sys:ro
+          Volume=/:/rootfs:ro
+          Exec=--path.procfs=/host/proc --path.sysfs=/host/sys --path.rootfs=/rootfs
+
+          [Install]
+          WantedBy=multi-user.target default.target
+    - path: /etc/containers/systemd/cadvisor.container
+      mode: 0644
+      contents:
+        inline: |
+          [Unit]
+          Description=cAdvisor for Podman Container Metrics
+          After=network-online.target
+
+          [Container]
+          Image=gcr.io/cadvisor/cadvisor:v0.49.1
+          ContainerName=cadvisor
+          AutoUpdate=registry
+          PublishPort=8080:8080
+          SecurityLabelDisable=true
+          Volume=/:/rootfs:ro
+          Volume=/var/run:/var/run:ro
+          Volume=/sys:/sys:ro
+          Volume=/var/lib/containers/:/var/lib/containers:ro
+          Volume=/dev/disk/:/dev/disk:ro
+
+          [Install]
+          WantedBy=multi-user.target default.target
     - path: /etc/containers/systemd/pihole.container
       mode: 0644
       contents:
@@ -23,11 +103,10 @@ storage:
 
           [Container]
           ContainerName=pihole
-          HostName=wario
           Environment=TZ=America/New_York
           Environment=FTLCONF_dns_listeningMode=ALL
 
-          #Secret=pihole_webpassword,type=env,target=FTLCONF_webserver_api_password
+          #Secret=pihole_webpassword,target=FTLCONF_webserver_api_password
 
           Image=docker.io/pihole/pihole:latest
           AutoUpdate=registry
@@ -36,6 +115,86 @@ storage:
 
           Volume=/mnt/deadpool/containers/server-01/pihole-etc:/etc/pihole
           Volume=/mnt/deadpool/containers/server-01/pihole-dnsmasq:/etc/dnsmasq.d
+
+          [Service]
+          Restart=always
+
+          [Install]
+          WantedBy=default.target
+    - path: /etc/containers/systemd/tailscale.container
+      mode: 0644
+      contents:
+        inline: |
+          [Unit]
+          Description=Tailscale Network (Hardened Image)
+          After=network-online.target
+
+          [Container]
+          Image=docker.io/tailscale/tailscale:latest
+          ContainerName=tailscale
+
+          # Required state persistence
+          Volume=/mnt/deadpool/containers/server-01/tailscale:/var/lib/tailscale
+
+          # Required device access for networking
+          AddDevice=/dev/net/tun
+
+          # Required capabilities (matches Docker docs)
+          AddCapability=NET_ADMIN
+          AddCapability=NET_RAW
+
+          #Environment=TS_EXTRA_ARGS=--advertise-exit-node
+
+          # Host networking is required for correct routing
+          Network=host
+
+          # ---- Tailscale configuration ----
+
+          # REQUIRED: auth key (or login via device flow if omitted)
+          Environment=TS_AUTHKEY=tskey-auth-kkTC8bJW8i11CNTRL-usqASEwi3V5ELCtEEJSwU58EBb9cyE1nC
+
+          # Required state dir (matches volume mount)
+          Environment=TS_STATE_DIR=/var/lib/tailscale
+
+          # Optional but common:
+          #Environment=TS_USERSPACE=true
+          #Environment=TS_ACCEPT_DNS=true
+
+          AutoUpdate=registry
+
+          [Service]
+          Restart=always
+          TimeoutStartSec=0
+
+          [Install]
+          WantedBy=default.target
+    - path: /etc/containers/systemd/filebrowser.container
+      mode: 0644
+      contents:
+        inline: |
+          [Unit]
+          Description=Filebrowser File Manager Container
+          After=network-online.target
+
+          [Container]
+          Image=docker.io/filebrowser/filebrowser:latest
+          ContainerName=filebrowser
+
+          # Enable automatic updates from the registry
+          AutoUpdate=registry
+
+          # Expose your desired port (8080 host to 80 container)
+          PublishPort=8081:8080
+
+          # Exact folder and database mappings from your current setup
+          Volume=/mnt/deadpool:/srv
+          Volume=/mnt/deadpool/containers/server-01/filebrowser:/database
+
+          # Add these two lines to align permissions with your user account
+          #User=1000:1000
+          #UserNS=keep-id
+
+          Environment=FB_PORT=8080
 
           [Service]
           Restart=always

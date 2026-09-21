@@ -1,0 +1,266 @@
+variant: fcos
+version: 1.7.0
+systemd:
+  units:
+    - name: podman.socket
+      enabled: true
+passwd:
+  users:
+    - name: core
+      ssh_authorized_keys:
+        - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDu3b0sR30apw6ot/2esLkxRqmjjw1zfzSLYm6sfohwY doug@wario
+        - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAcEz5hdQTZSv5rtcVjDeDgfA+r7AFsua8k8FQxxp8rB doug@ganon
+        - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEri7IoTkuqP0dbjB4k/mDxuILXvwy6VsGcAbC2Q+yQ0 doug@bowser
+storage:
+  directories:
+    - path: /mnt/deadpool
+      mode: 0755
+  files:
+    - path: /etc/hostname
+      mode: 0644
+      overwrite: true
+      contents:
+        inline: pihole-1
+    - path: /etc/fstab
+      append:
+        - inline: |
+              192.168.1.5:/deadpool/doug    /mnt/deadpool/    nfs    defaults    0 0
+    - path: /etc/NetworkManager/system-connections/enp1s0.nmconnection
+      mode: 0600
+      contents:
+        inline: |
+          [connection]
+          id=enp1s0
+          type=ethernet
+          interface-name=enp1s0
+          [ipv4]
+          address1=192.168.1.100/24,192.168.1.1
+          dns=192.168.1.1
+          dns-search=
+          may-fail=false
+          method=manual
+    # freeing up port 53
+    - path: /etc/systemd/resolved.conf.d/no-stub.conf
+      mode: 0644
+      overwrite: true
+      contents:
+        inline: |
+          [Resolve]
+          DNSStubListener=no
+    - path: /etc/resolve.conf
+      mode: 0644
+      overwrite: true
+      contents:
+        inline: |
+          nameserver 127.0.0.1
+    - path: /etc/zincati/config.d/51-rollout-wariness.toml
+      contents:
+        inline: |
+          [identity]
+          rollout_wariness = 0.001
+    - path: /etc/zincati/config.d/55-updates-strategy.toml
+      contents:
+        inline: |
+          [updates]
+          strategy = "periodic"
+          [[updates.periodic.window]]
+          days = [ "Sat", "Sun" ]
+          start_time = "02:30"
+          length_minutes = 60
+    - path: /etc/containers/systemd/node-exporter.container
+      mode: 0644
+      contents:
+        inline: |
+          [Unit]
+          Description=Node Exporter for Host Metrics
+          After=network-online.target
+
+          [Container]
+          Image=quay.io/prometheus/node-exporter:latest
+          ContainerName=node-exporter
+          AutoUpdate=registry
+          Network=host
+          Volume=/proc:/host/proc:ro
+          Volume=/sys:/host/sys:ro
+          Volume=/:/rootfs:ro
+          Exec=--path.procfs=/host/proc --path.sysfs=/host/sys --path.rootfs=/rootfs
+
+          [Service]
+          Restart=always
+
+          [Install]
+          WantedBy=multi-user.target default.target
+    - path: /etc/containers/systemd/backrest.container
+      mode: 0644
+      contents:
+        inline: |
+          [Unit]
+          Description=Backrest
+
+          After=var-mnt-deadpool.mount
+
+          [Container]
+          ContainerName=backrest
+          Environment=BACKREST_DATA=/data BACKREST_CONFIG=/config/config.json XDG_CACHE_HOME=/cache TZ=America/New_York
+          HostName=backrest
+          Image=docker.io/garethgeorge/backrest:scratch
+          SecurityLabelDisable=true
+          PublishPort=9898:9898
+          Volume=backrest-data:/data:Z
+          Volume=backrest-config:/config:Z
+          Volume=backrest-cache:/cache:Z
+          Volume=/:/host:Z
+          Volume=/mnt/deadpool/backups/repos:/repos
+
+          [Service]
+          Restart=always
+
+          [Install]
+          WantedBy=multi-user.target default.target
+    - path: /etc/alloy/config.alloy
+      contents:
+        inline: |
+          // 1. Read directly from the systemd journal logs and pass them to the relabel stage
+          loki.source.journal "system_journal" {
+            max_age    = "12h"
+            forward_to = [loki.relabel.journal_fields.receiver]
+
+            labels = {
+              job = "systemd-journal",
+            }
+          }
+
+          // 2. Map system metadata variables and forward them to the Loki writer component
+          loki.relabel "journal_fields" {
+            forward_to = [loki.write.loki_endpoint.receiver]
+
+            rule {
+              target_label  = "host"
+              replacement  = constants.hostname
+            }
+
+            rule {
+              source_labels = ["__journal__systemd_unit"]
+              target_label  = "service"
+            }
+
+            rule {
+              source_labels = ["__journal__syslog_identifier"]
+              target_label  = "caller"
+            }
+          }
+
+          // 3. Receive the fully processed logs and push them to your central Loki engine
+          loki.write "loki_endpoint" {
+            endpoint {
+              url = "http://192.168.1.102:3100/loki/api/v1/push"
+            }
+          }
+    - path: /etc/containers/systemd/alloy.container
+      mode: 0644
+      contents:
+        inline: |
+          [Unit]
+          Description=Grafana Alloy Log Collector
+          After=network-online.target
+          Wants=network-online.target
+
+          [Container]
+          Image=docker.io/grafana/alloy:latest
+          ContainerName=alloy
+          SecurityLabelDisable=true
+          Network=host
+          # Run the run command pointing to your mounted config
+          Exec=run --server.http.listen-addr=0.0.0.0:12345 /etc/alloy/config.alloy
+
+          # Configuration File Volume
+          Volume=/etc/alloy/config.alloy:/etc/alloy/config.alloy:Z,ro
+
+          # Systemd Journal Log Volumes (Read-Only)
+          Volume=/var/log/journal:/var/log/journal:ro
+          Volume=/run/log/journal:/run/log/journal:ro
+          Volume=/etc/machine-id:/etc/machine-id:ro
+
+          [Service]
+          Restart=always
+          RestartSec=5s
+
+          [Install]
+          WantedBy=multi-user.target
+    - path: /etc/containers/systemd/pihole.container
+      mode: 0644
+      contents:
+        inline: |
+          [Unit]
+          Description=Pihole
+
+          After=network-online.target
+
+          [Container]
+          ContainerName=pihole
+          Environment=TZ=America/New_York
+          Environment=FTLCONF_dns_listeningMode=ALL
+
+          #Secret=pihole_webpassword,target=FTLCONF_webserver_api_password
+
+          Image=docker.io/pihole/pihole:latest
+          AutoUpdate=registry
+
+          Network=host
+
+          Volume=pihole-etc:/etc/pihole:Z
+          Volume=pihole-dnsmasq:/etc/dnsmasq.d:Z
+
+          [Service]
+          Restart=always
+
+          [Install]
+          WantedBy=default.target
+    - path: /etc/containers/systemd/tailscale.container
+      mode: 0644
+      contents:
+        inline: |
+          [Unit]
+          Description=Tailscale Network (Hardened Image)
+
+          After=network-online.target
+
+          [Container]
+          Image=docker.io/tailscale/tailscale:latest
+          ContainerName=tailscale
+
+          # Required state persistence
+          Volume=tailscale:/var/lib/tailscale:Z
+
+          # Required device access for networking
+          AddDevice=/dev/net/tun
+
+          # Required capabilities (matches Docker docs)
+          AddCapability=NET_ADMIN
+          AddCapability=NET_RAW
+
+          #Environment=TS_EXTRA_ARGS=--advertise-exit-node
+
+          # Host networking is required for correct routing
+          Network=host
+
+          # ---- Tailscale configuration ----
+
+          # REQUIRED: auth key (or login via device flow if omitted)
+          #Environment=TS_AUTHKEY=tskey-auth-kkTC8bJW8i11CNTRL-usqASEwi3V5ELCtEEJSwU58EBb9cyE1nC
+
+          # Required state dir (matches volume mount)
+          Environment=TS_STATE_DIR=/var/lib/tailscale
+
+          # Optional but common:
+          #Environment=TS_USERSPACE=true
+          #Environment=TS_ACCEPT_DNS=true
+
+          AutoUpdate=registry
+
+          [Service]
+          Restart=always
+          TimeoutStartSec=0
+
+          [Install]
+          WantedBy=multi-user.target

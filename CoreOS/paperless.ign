@@ -1,0 +1,194 @@
+{
+  "ignition": {
+    "version": "3.6.0"
+  },
+  "passwd": {
+    "users": [
+      {
+        "name": "core",
+        "sshAuthorizedKeys": [
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDu3b0sR30apw6ot/2esLkxRqmjjw1zfzSLYm6sfohwY doug@wario",
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAcEz5hdQTZSv5rtcVjDeDgfA+r7AFsua8k8FQxxp8rB doug@ganon",
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEri7IoTkuqP0dbjB4k/mDxuILXvwy6VsGcAbC2Q+yQ0 doug@bowser"
+        ]
+      }
+    ]
+  },
+  "storage": {
+    "directories": [
+      {
+        "path": "/opt/paperless/consume",
+        "user": {
+          "name": "root"
+        },
+        "mode": 493
+      }
+    ],
+    "files": [
+      {
+        "overwrite": true,
+        "path": "/etc/hostname",
+        "contents": {
+          "compression": "",
+          "source": "data:,paperless"
+        },
+        "mode": 420
+      },
+      {
+        "path": "/etc/fstab",
+        "append": [
+          {
+            "compression": "",
+            "source": "data:;base64,MTkyLjE2OC4xLjU6L2RlYWRwb29sL2RvdWcgICAgL21udC9kZWFkcG9vbC8gICAgbmZzICAgIGRlZmF1bHRzICAgIDAgMAo="
+          }
+        ]
+      },
+      {
+        "path": "/etc/NetworkManager/system-connections/enp1s0.nmconnection",
+        "contents": {
+          "compression": "gzip",
+          "source": "data:;base64,H4sIAAAAAAAC/1zKQQrCMBBG4f2cxdamFtHFnKR0MSR/aaCZhswo9PauBHH5Ht8cD1VEz4culBNDa7CB/Kxg+IamcMrqaKtEdCoFXzPn+p4WkpQazAKH59iH+6MPfRhu13G6/AxKavzXnUFa3JiKnN0qeedVdgMV+HYkLqIv2ekTAAD//xbm+UyhAAAA"
+        },
+        "mode": 384
+      },
+      {
+        "path": "/etc/zincati/config.d/51-rollout-wariness.toml",
+        "contents": {
+          "compression": "",
+          "source": "data:,%5Bidentity%5D%0Arollout_wariness%20%3D%200.001%0A"
+        }
+      },
+      {
+        "path": "/etc/zincati/config.d/55-updates-strategy.toml",
+        "contents": {
+          "compression": "",
+          "source": "data:;base64,W3VwZGF0ZXNdCnN0cmF0ZWd5ID0gInBlcmlvZGljIgpbW3VwZGF0ZXMucGVyaW9kaWMud2luZG93XV0KZGF5cyA9IFsgIlNhdCIsICJTdW4iIF0Kc3RhcnRfdGltZSA9ICIwMjozMCIKbGVuZ3RoX21pbnV0ZXMgPSA2MAo="
+        }
+      },
+      {
+        "path": "/etc/alloy/config.alloy",
+        "contents": {
+          "compression": "gzip",
+          "source": "data:;base64,H4sIAAAAAAAC/5ySwW7bOhBF9/qKC67fkywHKNoA/oN2020QEGNxLDOhSGE4cmoU+fdClBTYQLrpTgRHZ+bMZdOgrfGTycF54U7DFSdJA/TMyNesPDi8pEkiBYTUZ1B0GCnnuWKAplIpHOjIAVmp5yqkV1/nNEnH9favWWB2PRv8roCBflnqGQAOMO3+bCrglOSNxFlNOOCpsFb8BrMnz8HlWrhjf2F5riqgVGQcChh4SceZuSr8v7X9rwLeq/eqahrsa/ygcbXEwEqOlHAh8XQMvKiu09zZfk+vHm/ilQVdGsYUOWp1OynM/aiL7idmhVLPn5ajG5OPeq8lU+BVSUl6Vrs0mOXOKaspV8JjoI4HjjrfdClmpai5nksiDVy073FLQPZjb0/GbulYu+7NTtGref68fWa5+I7NP7BD6q13HNWfPMvfGnQUAou5iexhfqtlOyWI0xTCFaOkjnNmd/NAp3z+iOyaJkHHUYXCkh3H3sf1nZYEYO4iWOLaTqvTJKEsXXV8bJr2275uv3yt27rd7R8f2t2umRENjb65tM08wDb4nwAAAP//mZs5wGQDAAA="
+        }
+      },
+      {
+        "path": "/etc/containers/systemd/alloy.container",
+        "contents": {
+          "compression": "gzip",
+          "source": "data:;base64,H4sIAAAAAAAC/3RSTWsbMRC961cIcmmhu9uvXAw6pE5bUkIKNm2hxoeJdrxWMztjRiOn++/L7hLTphgdxLx5895Dms03TrZ115ijpoMl4fBZYQcM/opIBn8rnV8KEUYTdVc7Qw2M9ij6UAlTYqwNtENzP4Atn+m5zVLYIDHq1t300GFoJT6g1kmabjZsYDRcEBhmcyf+HfQYppZbYyyabLiFe6TrlOGeMJgWdHeza9hLNnfhV4W97dFrYR+l74Fbf5DElrjzJn6Qor6Xwoatj8K71LmPvzGGcaCqMuoRtd6bHWpK2ZAraFsNr+vpLN68fff+0jdocc7czBL1nNJd+OVUF4XxQf2nROi/C5Ue3XyFM7OLc/jPVyqj8HrIhn3rv0hRBpp+Z5bM/sUKoa2+Mg0vTzZH0Iaka37N/MV/gMqJq4X/5T4H/uKOMXuI+8RYpXbxvB7DbtaoxxRx61aYDdQC0CMM+alcYwyX2bnNDWcDou20QNh+GEJfyFJVMurT/vwJAAD//82bYgOnAgAA"
+        },
+        "mode": 420
+      },
+      {
+        "path": "/etc/containers/systemd/node-exporter.container",
+        "contents": {
+          "compression": "gzip",
+          "source": "data:;base64,H4sIAAAAAAAC/1SQsW7jMAyGdz2FX8DxHkBD7i7AZbgMV6QdAg+E/TsRKosuSTXR2xdunLTdiP+TPhL/8ZCCte4PtJMwWeDk99yj2l4nFoNUA0v1l9WqfzAJnbrNYBCfYBeW15pTDAkrIznBnDv+5mQUEqR1u5FO8G+ZyipwMwmPsDOyNol71FgWrCMZ1Nzj455G+B9P3CYbH6aeDF5wCmpS3P52gD+zmnvmmEf4eUm3buboNgo/kBZdyDx9A+tGmG34zLZXdL6uJ7LzahYM6r9s1QK06CPXovf4ZvGLzbnjE+Q9dGjdf6iRmKd4oTKTXVKjGFv3QsnQ/yp+zNFCnRWyVFn1GChHuzf7EQAA//8sNjFLqAEAAA=="
+        },
+        "mode": 420
+      },
+      {
+        "path": "/etc/containers/systemd/backrest.container",
+        "contents": {
+          "compression": "gzip",
+          "source": "data:;base64,H4sIAAAAAAAC/2yR3W4aMRCF7/0UvAD4NrHki2WhAbUlUaB/QQgN3mHXxfag8ZiIt6/4bav2xuPjc+SjT7P8krys1AizY78XT8kOwe0YsyhVbQXZHoD7MUm/QWj2RGEQqSRRallTEvAJeaXu1xlEtJvbD+N08EwpYhI7rOqPr+P5Yj2qFpXVDQj07m/18+zD9MlqR2nr2+sY/MyUet9HT+u6qifj9eT589hqB67D3uLNVhHZO9AzfF//IN6pCWX5u38aoUXbkNshDzzpFhila5G4RX1LmewYxHVqjq6wl+Mn2GAY+QybgFa4oHopm+Bz90Is9vHh8cGcDvWVQvmjrX9CMmcw8/aPeUEyV7T/BU5c5oL329ZGd5TlLmMSfVvEmaDss2bcUzaXodRyjnzwDlfqFbMAi4XwDseTM01ZIISV+gZJsBkebSxBfL9k5IEAtyi9BrdQglyl+hUAAP//NEABEiECAAA="
+        },
+        "mode": 420
+      },
+      {
+        "path": "/etc/containers/systemd/tailscale.container",
+        "contents": {
+          "compression": "gzip",
+          "source": "data:;base64,H4sIAAAAAAAC/2xTXU/bMBR996+wxAs8hA5NSKySH0JqjTLWsSSFbVVVufZtuapjF/u6Xf/9lED5WHmLfHxO7rnneDJ2SFM2gKgDrgm9E7VCG7WywEdAWx9W/PhKBQMODB82agknjOULgiDcE555Z9HBKamwBGJsUnhHCh2EKesIwni9gnCKvkd78devvlUEkdgLa6QaEC8wY0e8hMeEAQyPpAj4GkLESOA0sDtv09vr/d5GhZ7F+Zsf/HmnYWCDGrjSGmLkCx/4sw90S5YbM+hw0TOw6TmgHiX3jq/VWs3RIiFEftwo0g8Q+aCzyI3X8aRVKfa3dmIk61k++D4cfXBe5veMHUm3weBdA45EXc3kr7rMZ3n5tRJZpswGAmGEDP4iZc6bbiVXPtKbwTlGHvYTtp60DwE08eATtcaesxQPPlLLz7Is469Ra+8WuExBtRXowM6z/DkelnLQ5yrRA1/Bjh/7wK1fouMbVPtdLqzfclxw3yARmBP2n6F8XF99k78FxRXsslYrW63q4mJ+fX+BZ2fFqC5vshQf80pu8fPdubwpSMrrajs+v5CX8y96J89c8UETDIbXCDZdFXjjk6ODEao6r+VsMCzFYUFa4R9d+ZXl80Rc+6bxrn8QzLiSZXWbF1JQSHAA50Uhb+vZYFQ94SxP5MdrowhEgCVGCjs2qSC0S5uyEiKpQELZrdpFVmMDPlHVnlWgxSfGJkMXSVk7ZffKEZjLnWiSJcxShLB/b/8CAAD//6qBHKTDAwAA"
+        },
+        "mode": 420
+      },
+      {
+        "path": "/etc/containers/systemd/paperless.env",
+        "user": {
+          "name": "root"
+        },
+        "contents": {
+          "compression": "gzip",
+          "source": "data:;base64,H4sIAAAAAAAC/3SN0UrDMBSG7/cUfYI2deDsIBfpctaFdU3IiXoZig2sMLAkgSml7y56oRHn7fm+/zuKKdAtIFojjsxCx+oWOC1XfwBXUnSGnmOctkVR3m1ykpO83FZV9ZDYjTTQ1aCbm62U/hdcE0KSiQYukHo3jOGXdr/eVInG64NEQ795gvaihY6dwO6lPjFD5zl78a6PbrDvrvfZshTznMUxXly2LMlQ7rTFo1CW6d1BPMFXiV7HeLbRvcWVkmgaDZ/P6dRPzl9cCD/XRwR9664Y4rPUnE59CNdXP6w+AgAA//9v4jLLhgEAAA=="
+        },
+        "mode": 384
+      },
+      {
+        "path": "/etc/containers/systemd/paperless-broker.container",
+        "user": {
+          "name": "root"
+        },
+        "contents": {
+          "compression": "gzip",
+          "source": "data:;base64,H4sIAAAAAAAC/zzOsU7DQBAE0H6/gh9w6JGuCNCkSQEKFJaLxR7Myedba3ecyH+PBIZqppo37aVmdvKM6D0vzFbTm5YJ292H2wSX4yfhqYI386mxWnLFgeojKNI+WaXmCu/kv551Rlp0gRdENPvOadYRabB+gh+y3V9/lD0eihJBOf8y6cuCclxpl2VQIjnGHPRNpH2FX3OPTl4QVGfSctMtRNpTDWopnbxrJYbHLc1rYW7WgP89/g4AAP//pbkVi+8AAAA="
+        },
+        "mode": 420
+      },
+      {
+        "path": "/etc/containers/systemd/paperless-db.container",
+        "user": {
+          "name": "root"
+        },
+        "contents": {
+          "compression": "gzip",
+          "source": "data:;base64,H4sIAAAAAAAC/1TQPWvDQAzG8V3fJbk9cEP6BllCaUk7GA+K/dQ9ctZdJdnB376UNoZumv4/9DQnSd7SA6zTVD0Vic/FfFAY7T8cGgV+LXrZFMlJsHXWAU7U3BdxTgJtaT2PPCJWrtAMs01/psPIA2Jfugt0m0rI6aysS6h/yC6zw5weZU5aZIT4U8qIAd6F7ta1YIs5xj6s8S1kpreSp39iHXp23oWZ9Ydama9Mx98/4mcxp/3k5VR7dkTFkMx1IWpeoXPq0NILzFk9cr7yYkTNQcw555beWRz93RLHKXvaTAa9TfIdAAD//7gwHFdLAQAA"
+        },
+        "mode": 420
+      },
+      {
+        "path": "/etc/containers/systemd/paperless-tika.container",
+        "user": {
+          "name": "root"
+        },
+        "contents": {
+          "compression": "gzip",
+          "source": "data:;base64,H4sIAAAAAAAC/zyOsWrDQBBE+/0X2X3gCidp3LhIYlIIFYs0kRed7o7dUYz+PpiQdAMD773+WoyDvCJGt0arJX3YonL6IjwV8F596WrJVnCg+gyK9C+1UK3AB/mfF12RmjZ4RkTHB+W86ow01XGBH6wetel4w/HxPWUlgnL5VaRbDcppY722SYnkmC3ou0j/Dv+2EYO8IajOpPmue4j05xLUnAf51EJMz3tat0zrtoD/1f4EAAD//+MQtJLiAAAA"
+        },
+        "mode": 420
+      },
+      {
+        "path": "/etc/containers/systemd/paperless-gotenberg.container",
+        "user": {
+          "name": "root"
+        },
+        "contents": {
+          "compression": "gzip",
+          "source": "data:;base64,H4sIAAAAAAAC/0yQvW7rMAyFdz7FfQHl7gU0pD8osmRoEXQwPDDyqaNGFg2SSpq3LwqjbreDjx8I8nSHmr2nR1jSPHuWGp/FUY/QkbbvDo0VfhU9B6klV2ycdYQTdQ9SnXOF9rTGPU+IM8/QArMwrqt2E4+Ig6QzdJPl/zr5TXeFHeb09IkUV/ovhHRSmXKbwpCNjwXhgy+83BtdG/4qXIpcQ66G1BShSOJyEltE2i+vxG9C2+ZymAd2RMWYzfVG1L1CLzmhpxeYs3rkcuWbEXW7as6l9PTG1THc3+LUiufQDPrTylcAAAD//+VwJ1JPAQAA"
+        },
+        "mode": 420
+      },
+      {
+        "path": "/etc/containers/systemd/paperless-webserver.container",
+        "user": {
+          "name": "root"
+        },
+        "contents": {
+          "compression": "gzip",
+          "source": "data:;base64,H4sIAAAAAAAC/3yQy2rzQAyF93oXe/aBWeS/QTbhpyUt1Hih2qozdEYzSBqnfvvSgnOB0J2kcz7poO7AwXr4QzpIKBYy+/9YSCKpwvbNSPyM0iS2ZiQcS86xTbmyAfyENjx9AHS/MxsGJunhXO4xkS9n44lelWQmgV3Cifx0HKQN2ZXrVbfdJqKRGvzlOUjmRGz/QiTvyAY3rHfU6aJGabzALfEMe7JTlnd/zGoATznWmzwjGm5cVXEqwwV1X/PV7RKbW99xlS3RGO7C38KZzsWutCGz1kT3sFV6AdhWy4cyopEXmoKaLADdI8kcBurhgdRQzGM84aIA3Y7VMMYenpGNxl+LTzVaaKqStIYykcFnAAAA//8BOUKb/AEAAA=="
+        },
+        "mode": 420
+      },
+      {
+        "path": "/etc/containers/systemd/paperless-ai.container",
+        "user": {
+          "name": "root"
+        },
+        "contents": {
+          "compression": "gzip",
+          "source": "data:;base64,H4sIAAAAAAAC/3SRz27aQBDG7/MUfQGvvTbgP9Ie3MZSUZ1ghdAeEEJjPJAVy667Ow6lT1/lkKit2svoO/xmftJ8243VvIM7CgevR9bOqg5H8oZC+FAvoT4yeWWJr86fI2eNtiQY/YkYYPvJWUZtye/gPT7ghdT4diNCDcsLnkgN7nAmL7SLD2YKTP7nj/h3rDLIFBigsS/aO3shy6qru+axbdbr/eaxVc/MYxXHMs1FIhIhqyJJkv/wdbfcP62+NA8qHWbHPJ3LPi9wkS5KWRZpnhXY91IWx3I4DmVW9vn8T/Oqbev7ev95tX5695apkItCSDGvpJxls38t3K/umlZ9v5LNxLxK+2gxOwN8dWb66y3RgIxVjOMYvyaAbuqNDs+d86yyJEmq1wFQT+w244BMytNJB/Y3gO2a/Is+0A4eKTB6VmiueAsA26UNjMbs4BtapuHjTV0mwzqaAvm35n4FAAD//yHgomL2AQAA"
+        },
+        "mode": 420
+      }
+    ]
+  },
+  "systemd": {
+    "units": [
+      {
+        "enabled": true,
+        "name": "podman.socket"
+      }
+    ]
+  }
+}

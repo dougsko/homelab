@@ -1,0 +1,242 @@
+variant: fcos
+version: 1.7.0
+systemd:
+  units:
+    - name: podman.socket
+      enabled: true
+passwd:
+  users:
+    - name: core
+      ssh_authorized_keys:
+        - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDu3b0sR30apw6ot/2esLkxRqmjjw1zfzSLYm6sfohwY doug@wario
+        - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAcEz5hdQTZSv5rtcVjDeDgfA+r7AFsua8k8FQxxp8rB doug@ganon
+        - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEri7IoTkuqP0dbjB4k/mDxuILXvwy6VsGcAbC2Q+yQ0 doug@bowser
+
+storage:
+  files:
+    - path: /etc/hostname
+      mode: 0644
+      overwrite: true
+      contents:
+        inline: pirate
+    - path: /etc/fstab
+      append:
+        - inline: |
+              192.168.1.5:/deadpool/doug    /mnt/deadpool/    nfs    defaults    0 0
+    - path: /etc/NetworkManager/system-connections/enp1s0.nmconnection
+      mode: 0600
+      contents:
+        inline: |
+          [connection]
+          id=enp1s0
+          type=ethernet
+          interface-name=enp1s0
+          [ipv4]
+          address1=192.168.1.103/24,192.168.1.1
+          dns=192.168.1.1
+          dns-search=
+          may-fail=false
+          method=manual
+    - path: /etc/zincati/config.d/51-rollout-wariness.toml
+      contents:
+        inline: |
+          [identity]
+          rollout_wariness = 0.001
+    - path: /etc/zincati/config.d/55-updates-strategy.toml
+      contents:
+        inline: |
+          [updates]
+          strategy = "periodic"
+          [[updates.periodic.window]]
+          days = [ "Sat", "Sun" ]
+          start_time = "02:30"
+          length_minutes = 60
+    - path: /etc/containers/systemd/jackett.container
+      mode: 0644
+      contents:
+        inline: |
+          [Unit]
+          Description=Jackett Torrent Indexer Proxy Container
+          After=network-online.target
+
+          [Container]
+          Image=docker.io/linuxserver/jackett:latest
+          ContainerName=jackett
+
+          # Environment Variables
+          Environment=PUID=1000
+          Environment=PGID=1000
+          Environment=TZ=America/New_York
+
+          # Port Mapping (Host:Container)
+          PublishPort=9117:9117
+
+          # Persistent Storage Bind Mounts (Host:Container)
+          # Note: Ensure these directories exist on your host system
+          Volume=jackett-config:/config:Z
+          Volume=jackett-downloads:/downloads:Z
+          Volume=/mnt/deadpool:/deadpool:Z
+
+          # Podman / Systemd Automations
+          AutoUpdate=registry
+
+          [Service]
+          Restart=always
+          TimeoutStartSec=900
+
+          [Install]
+          WantedBy=multi-user.target
+    - path: /etc/containers/systemd/radarr.container
+      mode: 0644
+      contents:
+        inline: |
+          [Unit]
+          Description=Radarr Movie Management Container
+          After=var-mnt-deadpool.mount
+
+          [Container]
+          Image=docker.io/linuxserver/radarr:latest
+          ContainerName=radarr
+
+          # Environment Variables
+          Environment=PUID=1000
+          Environment=PGID=1000
+          Environment=TZ=America/New_York
+
+          # Port Mapping (Host:Container)
+          PublishPort=7878:7878
+
+          # Persistent Storage Bind Mounts
+          # Adjust the host paths before the colon (:) to match your directory layout
+          Volume=radarr-config:/config:Z
+          Volume=/mnt/deadpool:/deadpool:Z
+
+          # Podman / Systemd Automations
+          AutoUpdate=registry
+
+          [Service]
+          Restart=always
+          TimeoutStartSec=900
+
+          [Install]
+          WantedBy=multi-user.target
+    - path: /etc/containers/systemd/lidarr.container
+      mode: 0644
+      contents:
+        inline: |
+          [Unit]
+          Description=Lidarr Media Automation
+          After=var-mnt-deadpool.mount
+
+          [Container]
+          ContainerName=lidarr
+          Image=lscr.io/linuxserver/lidarr:latest
+          PublishPort=8686:8686
+          Environment=PUID=1000
+          Environment=PGID=1000
+          Environment=TZ=America/New_York
+          Volume=lidarr-config:/config:Z
+          Volume=/mnt/deadpool:/deadpool:Z
+
+          [Service]
+          Restart=always
+
+          [Install]
+          WantedBy=multi-user.target
+    - path: /etc/containers/systemd/sonarr.container
+      mode: 0644
+      contents:
+        inline: |
+          [Unit]
+          Description=Sonarr Media Automation
+          After=var-mnt-deadpool.mount
+
+          [Container]
+          ContainerName=sonarr
+          Image=lscr.io/linuxserver/sonarr:latest
+          PublishPort=8989:8989
+          Environment=PUID=1000
+          Environment=PGID=1000
+          Environment=TZ=America/New_York
+          Volume=sonarr-config:/config:Z
+          Volume=/mnt/deadpool:/deadpool:Z
+
+          [Service]
+          Restart=always
+
+          [Install]
+          WantedBy=multi-user.target
+    - path: /etc/containers/systemd/backrest.container
+      mode: 0644
+      contents:
+        inline: |
+          [Unit]
+          Description=Backrest
+
+          After=var-mnt-deadpool.mount
+
+          [Container]
+          ContainerName=backrest
+          Environment=BACKREST_DATA=/data BACKREST_CONFIG=/config/config.json XDG_CACHE_HOME=/cache TZ=America/New_York
+          HostName=backrest
+          Image=docker.io/garethgeorge/backrest:scratch
+          SecurityLabelDisable=true
+          PublishPort=9898:9898
+          Volume=backrest-data:/data:Z
+          Volume=backrest-config:/config:Z
+          Volume=backrest-cache:/cache:Z
+          Volume=/:/host
+          Volume=/mnt/deadpool/backups/repos:/repos
+
+          [Service]
+          Restart=always
+
+          [Install]
+          WantedBy=multi-user.target default.target
+    - path: /etc/containers/systemd/tailscale.container
+      mode: 0644
+      contents:
+        inline: |
+          [Unit]
+          Description=Tailscale Network (Hardened Image)
+
+          After=network-online.target
+
+          [Container]
+          Image=docker.io/tailscale/tailscale:latest
+          ContainerName=tailscale
+
+          # Required state persistence
+          Volume=tailscale:/var/lib/tailscale:Z
+
+          # Required device access for networking
+          AddDevice=/dev/net/tun
+
+          # Required capabilities (matches Docker docs)
+          AddCapability=NET_ADMIN
+          AddCapability=NET_RAW
+
+          #Environment=TS_EXTRA_ARGS=--advertise-exit-node
+
+          # Host networking is required for correct routing
+          Network=host
+
+          # ---- Tailscale configuration ----
+
+          # REQUIRED: auth key (or login via device flow if omitted)
+          #Environment=TS_AUTHKEY=tskey-auth-kkTC8bJW8i11CNTRL-usqASEwi3V5ELCtEEJSwU58EBb9cyE1nC
+
+          # Required state dir (matches volume mount)
+          Environment=TS_STATE_DIR=/var/lib/tailscale
+
+          # Optional but common:
+          #Environment=TS_USERSPACE=true
+          #Environment=TS_ACCEPT_DNS=true
+
+          AutoUpdate=registry
+          [Service]
+          Restart=always
+          TimeoutStartSec=0
+
+          [Install]
+          WantedBy=multi-user.target

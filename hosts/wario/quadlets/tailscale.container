@@ -10,11 +10,11 @@ ContainerName=tailscale
 Volume=tailscale:/var/lib/tailscale:Z
 
 # Required device access for networking
-#Device=/dev/net/tun
+AddDevice=/dev/net/tun
 
 # Required capabilities (matches Docker docs)
-#CapAdd=NET_ADMIN
-#CapAdd=NET_RAW
+AddCapability=NET_ADMIN
+AddCapability=NET_RAW
 
 Environment=TS_EXTRA_ARGS=--advertise-exit-node
 
