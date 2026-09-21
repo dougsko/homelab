@@ -1,0 +1,28 @@
+[Unit]
+Description=Grafana Alloy Log Collector
+After=network-online.target
+Wants=network-online.target
+
+[Container]
+Image=docker.io/grafana/alloy:latest
+ContainerName=alloy
+SecurityLabelDisable=true
+Network=host
+# Run the run command pointing to your mounted config
+Exec=run --server.http.listen-addr=0.0.0.0:12345 /etc/alloy/config.alloy
+
+# Configuration File Volume
+Volume=/etc/alloy/config.alloy:/etc/alloy/config.alloy:Z,ro
+
+# Systemd Journal Log Volumes (Read-Only)
+Volume=/var/log/journal:/var/log/journal:ro
+Volume=/run/log/journal:/run/log/journal:ro
+Volume=/etc/machine-id:/etc/machine-id:ro
+
+[Service]
+Restart=always
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target
+
