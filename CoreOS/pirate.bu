@@ -51,17 +51,17 @@ storage:
           days = [ "Sat", "Sun" ]
           start_time = "02:30"
           length_minutes = 60
-    - path: /etc/containers/systemd/jackett.container
+    - path: /etc/containers/systemd/prowlarr.container
       mode: 0644
       contents:
         inline: |
           [Unit]
-          Description=Jackett Torrent Indexer Proxy Container
+          Description=Prowlarr Indexer Manager
           After=network-online.target
 
           [Container]
-          Image=docker.io/linuxserver/jackett:latest
-          ContainerName=jackett
+          Image=docker.io/linuxserver/prowlarr:latest
+          ContainerName=prowlarr
 
           # Environment Variables
           Environment=PUID=1000
@@ -69,20 +69,18 @@ storage:
           Environment=TZ=America/New_York
 
           # Port Mapping (Host:Container)
-          PublishPort=9117:9117
+          PublishPort=9696:9696
 
           # Persistent Storage Bind Mounts (Host:Container)
           # Note: Ensure these directories exist on your host system
-          Volume=jackett-config:/config:Z
-          Volume=jackett-downloads:/downloads:Z
-          Volume=/mnt/deadpool:/deadpool:Z
+          Volume=prowlarr-config:/config:Z
 
           # Podman / Systemd Automations
           AutoUpdate=registry
 
           [Service]
           Restart=always
-          TimeoutStartSec=900
+          TimeoutStartSec=300
 
           [Install]
           WantedBy=multi-user.target
