@@ -247,7 +247,7 @@ storage:
           # ---- Tailscale configuration ----
 
           # REQUIRED: auth key (or login via device flow if omitted)
-          #Environment=TS_AUTHKEY=tskey-auth-kkTC8bJW8i11CNTRL-usqASEwi3V5ELCtEEJSwU58EBb9cyE1nC
+          #Environment=TS_AUTHKEY=
 
           # Required state dir (matches volume mount)
           Environment=TS_STATE_DIR=/var/lib/tailscale

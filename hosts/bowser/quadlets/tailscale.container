@@ -24,7 +24,7 @@ Network=host
 # ---- Tailscale configuration ----
 
 # REQUIRED: auth key (or login via device flow if omitted)
-Environment=TS_AUTHKEY=tskey-auth-khHQzfhD1221CNTRL-mHX3UPY6DLjzrfBzvPn5Lj7vhHq2NExbY
+Environment=TS_AUTHKEY=
 
 # Required state dir (matches volume mount)
 Environment=TS_STATE_DIR=/var/lib/tailscale
