@@ -51,6 +51,116 @@ storage:
           days = [ "Sat", "Sun" ]
           start_time = "02:30"
           length_minutes = 60
+    - path: /etc/containers/systemd/unpackerr.container
+      mode: 0644
+      contents:
+        inline: |
+          [Unit]
+          Description=Unpackerr
+          After=network-online.target
+          Wants=network-online.target
+
+          [Container]
+          Image=ghcr.io/unpackerr/unpackerr:latest
+          ContainerName=unpackerr
+
+          # Configuration
+          Environment=TZ=America/New_York
+          EnvironmentFile=/etc/containers/systemd/unpackerr.env
+
+          # Same path inside Unpackerr as Sonarr/qBittorrent
+          Volume=/mnt/deadpool:/deadpool:Z
+
+          # Network
+          Network=host
+
+          [Service]
+          Restart=always
+          TimeoutStartSec=90
+
+          [Install]
+          WantedBy=multi-user.target
+    - path: /etc/containers/systemd/unpackerr.env
+      mode: 0644
+      contents:
+        inline: |
+          UN_SONARR_0_URL=http://192.168.1.103:8989
+          UN_SONARR_0_API_KEY=
+          UN_SONARR_0_PATHS_0=/deadpool/torrents/complete
+
+          UN_RADARR_0_URL=http://192.168.1.103:7878
+          UN_RADARR_0_API_KEY=
+          UN_RADARR_0_PATHS_0=/deadpool/torrents/complete
+
+          UN_LIDARR_0_URL=http://192.168.1.103:8686
+          UN_LIDARR_0_API_KEY=
+          UN_LIDARR_0_PATHS_0=/deadpool/torrents/complete
+    - path: /etc/systemd/system/torrent-sync.service
+      mode: 0644
+      contents:
+        inline: |
+          [Unit]
+          Description=Sync completed torrents from qBittorrent host
+          After=network-online.target
+          Wants=network-online.target
+
+          [Service]
+          Type=oneshot
+          User=1000
+          Group=1000
+          RuntimeDirectory=torrent-sync
+          RuntimeDirectoryMode=0755
+
+          ExecStart=/usr/bin/flock -n /run/torrent-sync/torrent-sync.lock \
+              /usr/bin/rsync \
+              -r \
+              -P \
+              --size-only \
+              --no-compress \
+              --human-readable \
+              --stats \
+              dougsko@kratos.bysh.me:/home/hd29/dougsko/torrents/complete/ \
+              /mnt/deadpool/torrents/complete/
+
+          TimeoutStartSec=0
+    - path: /etc/systemd/system/torrent-sync.timer
+      mode: 0644
+      contents:
+        inline: |
+          [Unit]
+          Description=Run completed torrent sync periodically
+
+          [Timer]
+          OnBootSec=30s
+          OnUnitActiveSec=2min
+          AccuracySec=10s
+          Persistent=true
+
+          [Install]
+          WantedBy=timers.target
+    - path: /etc/containers/systemd/byparr.container
+      mode: 0644
+      contents:
+        inline: |
+          [Unit]
+          Description=Byparr
+          Wants=network-online.target
+          After=network-online.target
+
+          [Container]
+          Image=ghcr.io/thephaseless/byparr:latest
+          ContainerName=byparr
+
+          PublishPort=8191:8191
+
+          ShmSize=512m
+
+          [Service]
+          Restart=always
+          TimeoutStartSec=900
+
+          [Install]
+          WantedBy=multi-user.target
     - path: /etc/containers/systemd/prowlarr.container
       mode: 0644
       contents:
@@ -222,7 +332,7 @@ storage:
           # ---- Tailscale configuration ----
 
           # REQUIRED: auth key (or login via device flow if omitted)
-          #Environment=TS_AUTHKEY=tskey-auth-kkTC8bJW8i11CNTRL-usqASEwi3V5ELCtEEJSwU58EBb9cyE1nC
+          #Environment=TS_AUTHKEY=
 
           # Required state dir (matches volume mount)
           Environment=TS_STATE_DIR=/var/lib/tailscale

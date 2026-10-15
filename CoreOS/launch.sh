@@ -6,7 +6,7 @@ IGNITION_CONFIG="/var/lib/libvirt/images/${HOST}.ign"
 IMAGE="/var/lib/libvirt/images/fedora-coreos-44.20260523.3.1-qemu.x86_64.qcow2"
 VM_NAME="${HOST}"
 VCPUS="2"
-RAM_MB="2048"
+RAM_MB="2096"
 STREAM="stable"
 DISK_GB="20"
 # For x86 / aarch64,
@@ -21,4 +21,4 @@ IGNITION_DEVICE_ARG=(--qemu-commandline="-fw_cfg name=opt/com.coreos/config,file
 virt-install --connect="qemu:///system" --name="${VM_NAME}" --vcpus="${VCPUS}" --memory="${RAM_MB}" \
         --os-variant="fedora-coreos-$STREAM" --import --graphics=none \
         --disk="size=${DISK_GB},backing_store=${IMAGE}" \
-        --network bridge=br0 "${IGNITION_DEVICE_ARG[@]}"
+        --network bridge=bridge0 "${IGNITION_DEVICE_ARG[@]}"

@@ -1,0 +1,157 @@
+{
+  "ignition": {
+    "version": "3.6.0"
+  },
+  "passwd": {
+    "users": [
+      {
+        "name": "core",
+        "sshAuthorizedKeys": [
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDu3b0sR30apw6ot/2esLkxRqmjjw1zfzSLYm6sfohwY doug@wario",
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAcEz5hdQTZSv5rtcVjDeDgfA+r7AFsua8k8FQxxp8rB doug@ganon",
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEri7IoTkuqP0dbjB4k/mDxuILXvwy6VsGcAbC2Q+yQ0 doug@bowser"
+        ]
+      }
+    ]
+  },
+  "storage": {
+    "files": [
+      {
+        "overwrite": true,
+        "path": "/etc/hostname",
+        "contents": {
+          "compression": "",
+          "source": "data:,pirate"
+        },
+        "mode": 420
+      },
+      {
+        "path": "/etc/fstab",
+        "append": [
+          {
+            "compression": "",
+            "source": "data:;base64,MTkyLjE2OC4xLjU6L2RlYWRwb29sL2RvdWcgICAgL21udC9kZWFkcG9vbC8gICAgbmZzICAgIGRlZmF1bHRzICAgIDAgMAo="
+          }
+        ]
+      },
+      {
+        "path": "/etc/NetworkManager/system-connections/enp1s0.nmconnection",
+        "contents": {
+          "compression": "gzip",
+          "source": "data:;base64,H4sIAAAAAAAC/1zKQQrCMBBG4f2cxdamFtHFnKR0MSR/aaCZhswo9PauBHH5Ht8cD1VEz4culBNDa7CB/Kxg+IamcMrqaKtEdCoFXzPn+p4WkpQazAKH59iH+6MPfRhu13G6/AxKavzXnUFa3JiKnN0qeedVdgMV+HYkLqIv2ekTAAD//xbm+UyhAAAA"
+        },
+        "mode": 384
+      },
+      {
+        "path": "/etc/zincati/config.d/51-rollout-wariness.toml",
+        "contents": {
+          "compression": "",
+          "source": "data:,%5Bidentity%5D%0Arollout_wariness%20%3D%200.001%0A"
+        }
+      },
+      {
+        "path": "/etc/zincati/config.d/55-updates-strategy.toml",
+        "contents": {
+          "compression": "",
+          "source": "data:;base64,W3VwZGF0ZXNdCnN0cmF0ZWd5ID0gInBlcmlvZGljIgpbW3VwZGF0ZXMucGVyaW9kaWMud2luZG93XV0KZGF5cyA9IFsgIlNhdCIsICJTdW4iIF0Kc3RhcnRfdGltZSA9ICIwMjozMCIKbGVuZ3RoX21pbnV0ZXMgPSA2MAo="
+        }
+      },
+      {
+        "path": "/etc/containers/systemd/unpackerr.container",
+        "contents": {
+          "compression": "gzip",
+          "source": "data:;base64,H4sIAAAAAAAC/3SQMW8iQQyF+/kVK10Nc+0hTQHcnURDcQsXBbSKrFmzWMzYG48XxL+PNgmQJpWf/OTnp2+/ZbLG/cYSlXoj4bDlHuIJVd38YKiB0S6ip4lwIsapgXZo7gnYyjee2y+FDYhRG7fK0GHojlGnJH64hT/ULIFhMXe/WUPGcLed+1EthQ/UDQpjQfeHz6TCGdnCZhfmGZUi+DVeXp5FT1/9v5QweLTo4y29+HIthrl9NJgin8c3NWSserBjRVyoxeqOooJS1cKg6l8XZCaqyOb+SxoyBp/ZfIvQ9iJp9lC7MXT9gch9znCUMhKqUc8UsXH/sBioBUgXuBa3oYwyWD3uaozh10/n9isuBik179SxXVxDHpLRZCioN+hvAQAA//+0+VetygEAAA=="
+        },
+        "mode": 420
+      },
+      {
+        "path": "/etc/containers/systemd/unpackerr.env",
+        "contents": {
+          "compression": "gzip",
+          "source": "data:;base64,H4sIAAAAAAAC/wr1iw/293MMCoo3iA8N8rHNKCkpsNLXN7Q00jM0s9Az1DM0MLaysLSw5EJW6RjgGe/tGmmLIhjgGOIRHG9gq5+SmphSkJ+fo1+SX1SUmldSrJ+cn1uQk1qSygXSEOToQsA+cwtzCxSVyPbBBYm1z8eTkH0WZhZmKCqR7YMLEmMfIAAA//+LxPABTwEAAA=="
+        },
+        "mode": 420
+      },
+      {
+        "path": "/etc/systemd/system/torrent-sync.service",
+        "contents": {
+          "compression": "gzip",
+          "source": "data:;base64,H4sIAAAAAAAC/3SRwU7DMBBE7/4K/0DigFQhkCwBKuKEhEgrDqUH19k2VuLdsN4A4etRS1JAwG0889Yar1dLDLJWc0ieQyeB0JYDeu0pdi0IVFqIGVCS3jJF/XwdZHR0TUnU1VaALYK8EjcZYRsQcnG8A1GPDiX9k6lVCfwSPKzVYujAEkKqSdQyAduToijULVPffcqHHiVEmAcGL8SDHStkaUD/K72jCmxxNpspdfMGvhTHYk2f2GwCmm1LvtEZasM9mu8X/TjkB+xJaa31cZb3yWhmPIn7SWQpvMP+ncPRQcr2q2RI6ejVfXSYMbjKbVr4GhYnE1RRv0sNXTbshFK+GVKdR7gwNUUwdXV6bkZi6pzM9GNmKh1RTAWu6ojaPzClFiEC9XLYTwneFuojAAD//3R7rEkOAgAA"
+        },
+        "mode": 420
+      },
+      {
+        "path": "/etc/systemd/system/torrent-sync.timer",
+        "contents": {
+          "compression": "",
+          "source": "data:,%5BUnit%5D%0ADescription%3DRun%20completed%20torrent%20sync%20periodically%0A%0A%5BTimer%5D%0AOnBootSec%3D30s%0AOnUnitActiveSec%3D2min%0AAccuracySec%3D10s%0APersistent%3Dtrue%0A%0A%5BInstall%5D%0AWantedBy%3Dtimers.target%0A"
+        },
+        "mode": 420
+      },
+      {
+        "path": "/etc/containers/systemd/byparr.container",
+        "contents": {
+          "compression": "gzip",
+          "source": "data:;base64,H4sIAAAAAAAC/3SPTUvDYBCE7/tf+hFBsIX3YPXSixSjeAg5bOOYLL4fYXdjib9eWtFbL3OYh2F4mtcs3tIjrFMZXUoOu3lkVXrj7BYy/FT0c1FylIyls/Zwuv9w6BVGzUPJzpKhLe0T9wj90OlSysoHjAMbIsxWx8vNNrLDnP43T5wQfhnRYTpGseFQ1MNdtam25yCqh1TLN8JtdZOImhr6JR1aeoY5qweOJ56NXiShTF6fuxpd2KzXRM0+m3OM7UUQ77s5pCm6LCaD/jn8BAAA//9pnss8FgEAAA=="
+        },
+        "mode": 420
+      },
+      {
+        "path": "/etc/containers/systemd/prowlarr.container",
+        "contents": {
+          "compression": "gzip",
+          "source": "data:;base64,H4sIAAAAAAAC/2yST2sbMRDF7/oUA7m0h8QuhUAMOjhNaH2wMXWc0hhTJruT9WDtjJmZ9Z9vXzZNQkp7kcRPek9PmlkthWOdbsgr412wSp6bHgqawURqOpLBFAUbsjR+CrIsFAe17blKYaGLQGsoUlp9UQlkIVunSYsN5VqrLdkF66CwdEcn25MNdi/uo4JBHulNNsOW8utuSmdwK3s2lZYk4B6N8bGQp3c0z5eTm/xpOBz+Tb/+j9495HFLxhUOZnT49VNt218yVwuY4m7H0sCHb+oxekv0Mc27x8K+6Q/lq8ury1E/PMvInD36aItQw4bgmqWGqXYS/q/RGcw0aAS34p0RxIacoGajKtSYHOjIHqACJ+0MNuoBfvKgNt1r6d79zHml8sTNaPAyP/x5Rd2iwAAWz5oaxl1oi305PfXr5a7GoGzUsIedUlotyPZc0Tp9Jw+0yFgOePJ0xy1pF4ueLajKn4fDlFYT8cBS1ukHSlB9fcptV4LPOyd7bYHfAQAA//+lfimuSwIAAA=="
+        },
+        "mode": 420
+      },
+      {
+        "path": "/etc/containers/systemd/radarr.container",
+        "contents": {
+          "compression": "gzip",
+          "source": "data:;base64,H4sIAAAAAAAC/2yRwW4aQQyG7/MUlnJJDrD0lHSlOZCmajkQoRBSFYQqs2OWaWbGK4+HdN++WtLQVsplxvpsy7/9b1bJ69bcUW7Ed+o52Qd0KAJzPnqCOSZsKVJS+MRJ0ScSM90riT2ijGLSkSN0HXMYRy5JjdmcC7dmFrEl67h5Jhl7roJP5VcmOZJUcppTB1TKas5N9xjJvuaMuYDP6eiF00nBE4rHXaBs/qF2sZrd2Q+TyeR/+uU9+ri200jiG6zu6eXHd5bnYciCRWGOXedTC5dfOWt91nNlFmUXfD4MRfb65vqmHp5TG0n2WQdpS2XBluDWJwfz4RDZXMDU/SxZQQ8EB84KHeohw472LHSiDQdOcFlfgTJE1OYAPRcB54UaZekhYM9FzROHcr7LqOG0921d/fnXb+kqJq3e/Kj/RuvXJV3EBBUs+6wUHUyLcsTB82yGeNU5VLJCrc8qvTGbJcnRN7Q1D5QVRS2GF+yzefSRuOhyYEtq7MfJxJjNLGXFELbmGyYld9vbWIL6UckkY0VpSc3vAAAA//+dPVYHcAIAAA=="
+        },
+        "mode": 420
+      },
+      {
+        "path": "/etc/containers/systemd/lidarr.container",
+        "contents": {
+          "compression": "gzip",
+          "source": "data:;base64,H4sIAAAAAAAC/2yP0UorQQyG7/MUfYHt9tyUsjAXPVakoKWoVeyySNxNa3AmUzKZrX17qdqK4E3y8SWE/PVK2BqYUWqVd8ZR3DV3qDq4oY5xMM0WAx49TDdG6nrUIogVHWG3i9EPQ8xiAPVFFEMW0gbOuMBAzn/eg3nALTmfWh1yLD1Lfk+kPWn5tVB5NEoGy/ziOb0uo5qbjCfj6ljgUnrWKIHE3HI1n7l/o9Hot736y96v3TSQcovlgvbPT1Hf4CH6fP6raKNseFuV3319GpdBrDylrH5oDVDfkfbcUgO3lAzVHPo9HhJAPZdk6H0DjyhG3f+DC9kbFzmRDg11SwYfAQAA///smOa/dAEAAA=="
+        },
+        "mode": 420
+      },
+      {
+        "path": "/etc/containers/systemd/sonarr.container",
+        "contents": {
+          "compression": "gzip",
+          "source": "data:;base64,H4sIAAAAAAAC/2yPwU4yQQzH730KXmBZvhtsMgc+MYaDhIhoZLMxdbfgxJmWdDqLvL1BBWPipf3l16bpv16ztwZmlFr1e/PCbiWMqoNb6jwOptkk4snDdGukrkctIlvREXZ7kTCMktkA6ithQ8+kDVxwgZFc+rwH84g7ciG1OvRSBs/5PZH2pOXXQhXQKBks80vw6XUpam48GU+qU4Fr7r0KR2Jzy/V85v6NRqPf9uYve79x00jqWywXdHh+En2DBwn58lfRCm/9riq/++Y8LiNbeU5Z/dAGoF6R9r6lBu4oGao5DAc8JoB6zskwhAYekY26/0cXczBf5EQ6NNQdGXwEAAD//+pv4TF0AQAA"
+        },
+        "mode": 420
+      },
+      {
+        "path": "/etc/containers/systemd/backrest.container",
+        "contents": {
+          "compression": "gzip",
+          "source": "data:;base64,H4sIAAAAAAAC/2yR3W4aMRCF7/0UvAD4NrHki2WhAbUlUaB/QQgN3mHXxfag8ZiIt6/4bav2xuPjc+SjT7P8krys1AizY78XT8kOwe0YsyhVbQXZHoD7MUm/QWj2RGEQqSRRallTEvAJeaXu1xlEtJvbD+N08EwpYhI7rOqPr+P5Yj2qFpXVDQj07m/18+zD9MlqR2nr2+sY/MyUet9HT+u6qifj9eT589hqB67D3uLNVhHZO9AzfF//IN6pCWX5u38aoUXbkNshDzzpFhila5G4RX1LmewYxHVqjq6wl+Mn2GAY+QybgFa4oHopm+Bz90Is9vHh8cGcDvWVQvmjrX9CMmcw8/aPeUEyV7T/BU5c5oL329ZGd5TlLmMSfVvEmaDss2bcUzaXodRyjnzwDlfqFbMAi4XwDseTM01ZIISV+gZJsBkebSxBfL9k5IEAtyi9BrdQglyl+hUAAP//NEABEiECAAA="
+        },
+        "mode": 420
+      },
+      {
+        "path": "/etc/containers/systemd/tailscale.container",
+        "contents": {
+          "compression": "gzip",
+          "source": "data:;base64,H4sIAAAAAAAC/2xTzW7bPBC88ykWyCU+KP7OBnjQZwmNUdRNJblpaxgGQ66dRSjSXa6U+u0LKXF+6twEDmc0s7NcrwLJRhWYLNNBKAbdGPLJGo+wRHmM/ACX14YdBnSwaM0eJ0rlO0HW4QnPYvAU8EoM71GUWs9jEEMBeaNGgnbRPiBfUZzKSfz1a+aNYBL1wlqaFvULrNQFVPi7I0YHSYwgHJATJcFgUX2Pvnt7fTbtDU893b35wa93Gg57sgjGWkwJdpHhOQeFvcqdK0ZcTx3204AylS6841tzMHfkSQgTXLZG7D0mKMaI4KJNk0Flfrp11Muy2ebFl8Xyg/Mqv1Xqogw9cQwtBtFNvS1/NFW+zatPtc4y43pkoYQZ/iHJQnTjSK5jkjfGgRLwyeGQyUZmtAIcOxmCPXep72OSgZ9lWQavVdsYdrTv2AwrMIJj5vLbalGVxQxMJ/fwgEe4jAw+7ilAT+Y0y52Pj0A7iC2JoJucJcpXzfXn8qf+oExH/DrFfmwT2tgFmah/ROomb8ptsaj0eceD8Ndxf42Hu07AxraNYXbmZFWXVX2Tz0st3OG50fm8vGm2xbJ+wlXeSVwdnBHUjHtKwke1rpGH3BtVYRLDoo1/NMekGmoxdlIPZzVa/Z9S60VIYrzfqFsTBN3/R912XijrEvLpyfwNAAD//5vcj5SGAwAA"
+        },
+        "mode": 420
+      }
+    ]
+  },
+  "systemd": {
+    "units": [
+      {
+        "enabled": true,
+        "name": "podman.socket"
+      }
+    ]
+  }
+}
