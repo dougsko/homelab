@@ -1,0 +1,19 @@
+[Unit]
+Description=Sonarr Media Automation
+After=var-mnt-deadpool.mount
+
+[Container]
+ContainerName=sonarr
+Image=lscr.io/linuxserver/sonarr:latest
+PublishPort=8989:8989
+Environment=PUID=1000
+Environment=PGID=1000
+Environment=TZ=America/New_York
+Volume=sonarr-config:/config:Z
+Volume=/mnt/deadpool:/deadpool:Z
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,19 @@
+[Unit]
+Description=Grafana
+Wants=network-online.target
+After=network-online.target prometheus.service
+
+[Container]
+Image=docker.io/grafana/grafana:latest
+ContainerName=grafana
+
+PublishPort=3000:3000
+
+Volume=grafana-data:/var/lib/grafana:Z
+Volume=/etc/grafana/provisioning:/etc/grafana/provisioning:ro,Z
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

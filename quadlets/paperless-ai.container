@@ -1,0 +1,25 @@
+[Unit]
+Description=Paperless AI
+After=network-online.target
+
+[Container]
+ContainerName=paperless-ai
+Image=docker.io/clusterzx/paperless-ai:latest
+
+Environment=PAPERLESS_URL=http://127.0.0.1:8000
+Environment=PAPERLESS_API_TOKEN=2d4f7251b78a62691982738abb118f9dfd939b75
+
+Environment=OLLAMA_HOST=http://192.168.1.5:11434
+Environment=OLLAMA_MODEL=qwen3.5:2b-64k
+
+Volume=paperless-ai-data:/app/data
+
+PublishPort=3000:3000
+
+AutoUpdate=registry
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

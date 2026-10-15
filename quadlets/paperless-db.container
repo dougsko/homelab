@@ -1,0 +1,17 @@
+[Unit]
+Description=Postgres
+After=network-online.target
+
+[Container]
+ContainerName=paperless-db
+Image=docker.io/library/postgres:latest
+EnvironmentFile=/etc/containers/systemd/paperless.env
+Volume=paperless-pgdata:/var/lib/postgresql
+Network=host
+AutoUpdate=registry
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,16 @@
+[Unit]
+Description=Node Exporter for Host Metrics
+After=network-online.target
+
+[Container]
+Image=quay.io/prometheus/node-exporter:latest
+ContainerName=node-exporter
+AutoUpdate=registry
+Network=host
+Volume=/proc:/host/proc:ro
+Volume=/sys:/host/sys:ro
+Volume=/:/rootfs:ro
+Exec=--path.procfs=/host/proc --path.sysfs=/host/sys --path.rootfs=/rootfs
+
+[Install]
+WantedBy=multi-user.target default.target

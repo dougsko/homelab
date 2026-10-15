@@ -1,0 +1,25 @@
+[Unit]
+Description=Unpackerr
+After=network-online.target
+Wants=network-online.target
+
+[Container]
+Image=ghcr.io/unpackerr/unpackerr:latest
+ContainerName=unpackerr
+
+# Configuration
+Environment=TZ=America/New_York
+EnvironmentFile=/etc/containers/systemd/unpackerr.env
+
+# Same path inside Unpackerr as Sonarr/qBittorrent
+Volume=/mnt/deadpool:/deadpool:Z
+
+# Network
+Network=host
+
+[Service]
+Restart=always
+TimeoutStartSec=90
+
+[Install]
+WantedBy=multi-user.target

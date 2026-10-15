@@ -1,17 +1,15 @@
 [Unit]
 Description=Backrest
+
 After=var-mnt-deadpool.mount
 
 [Container]
 ContainerName=backrest
-Environment=BACKREST_DATA=/data BACKREST_CONFIG=/config/config.json XDG_CACHE_HOME=/c
-ache TZ=America/New_York
-
+Environment=BACKREST_DATA=/data BACKREST_CONFIG=/config/config.json XDG_CACHE_HOME=/cache TZ=America/New_York
 HostName=backrest
 Image=docker.io/garethgeorge/backrest:scratch
 SecurityLabelDisable=true
 PublishPort=9898:9898
-
 Volume=backrest-data:/data:Z
 Volume=backrest-config:/config:Z
 Volume=backrest-cache:/cache:Z

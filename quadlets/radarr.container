@@ -1,0 +1,30 @@
+[Unit]
+Description=Radarr Movie Management Container
+After=var-mnt-deadpool.mount
+
+[Container]
+Image=docker.io/linuxserver/radarr:latest
+ContainerName=radarr
+
+# Environment Variables
+Environment=PUID=1000
+Environment=PGID=1000
+Environment=TZ=America/New_York
+
+# Port Mapping (Host:Container)
+PublishPort=7878:7878
+
+# Persistent Storage Bind Mounts
+# Adjust the host paths before the colon (:) to match your directory layout
+Volume=radarr-config:/config:Z
+Volume=/mnt/deadpool:/deadpool:Z
+
+# Podman / Systemd Automations
+AutoUpdate=registry
+
+[Service]
+Restart=always
+TimeoutStartSec=900
+
+[Install]
+WantedBy=multi-user.target

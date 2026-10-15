@@ -1,0 +1,15 @@
+[Unit]
+Description=Tika
+After=network-online.target
+
+[Container]
+ContainerName=paperless-tika
+Image=docker.io/apache/tika:latest
+Network=host
+AutoUpdate=registry
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

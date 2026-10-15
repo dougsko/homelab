@@ -1,0 +1,19 @@
+[Unit]
+Description=Lidarr Media Automation
+After=var-mnt-deadpool.mount
+
+[Container]
+ContainerName=lidarr
+Image=lscr.io/linuxserver/lidarr:latest
+PublishPort=8686:8686
+Environment=PUID=1000
+Environment=PGID=1000
+Environment=TZ=America/New_York
+Volume=lidarr-config:/config:Z
+Volume=/mnt/deadpool:/deadpool:Z
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

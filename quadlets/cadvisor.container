@@ -1,0 +1,18 @@
+[Unit]
+Description=cAdvisor for Podman Container Metrics
+After=network-online.target
+
+[Container]
+Image=gcr.io/cadvisor/cadvisor:v0.49.1
+ContainerName=cadvisor
+AutoUpdate=registry
+PublishPort=8080:8080
+SecurityLabelDisable=true
+Volume=/:/rootfs:ro
+Volume=/var/run:/var/run:ro
+Volume=/sys:/sys:ro
+Volume=/var/lib/containers/:/var/lib/containers:ro
+Volume=/dev/disk/:/dev/disk:ro
+
+[Install]
+WantedBy=multi-user.target default.target

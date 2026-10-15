@@ -1,0 +1,16 @@
+[Unit]
+Description=Gotenberg
+After=network-online.target
+
+[Container]
+ContainerName=paperless-gotenberg
+Image=docker.io/gotenberg/gotenberg:latest
+Exec=gotenberg --chromium-disable-javascript=true --chromium-allow-insecure-localhost=true
+Network=host
+AutoUpdate=registry
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

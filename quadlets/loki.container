@@ -1,0 +1,19 @@
+[Unit]
+Description=Grafana Loki Container
+After=network-online.target
+
+[Container]
+Image=docker.io/grafana/loki:latest
+ContainerName=loki
+# Expose Loki's default HTTP API port
+PublishPort=3100:3100
+# Mount local directories for persistent storage and configuration
+# Volume=/var/lib/loki:/loki
+# Pass command line arguments to run Loki in single-binary mode
+Exec=-config.file=/etc/loki/local-config.yaml
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
